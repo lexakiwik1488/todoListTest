@@ -7,14 +7,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ToDoList.Data;
 using ToDoList.Models;
+using ToDoList.Helpers;
+using System.Data.SqlClient;
+using Dapper.Contrib.Extensions;
+using System.Diagnostics;
+using Microsoft.Extensions.Logging;
+using ToDoList.ViewModels;
 
 namespace ToDoList.Controllers
 {
-    public class ItemsController : Controller
+    public class ToDoItemsController : Controller
     {
         private readonly ToDoListContext _context;
 
-        public ItemsController(ToDoListContext context)
+        public ToDoItemsController(ToDoListContext context)
         {
             _context = context;
         }
@@ -54,7 +60,7 @@ namespace ToDoList.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ExecutionDate,Description")] Items items)
+        public async Task<IActionResult> Create([Bind("Id,Title,ExecutionDate,Description,IsDone")] Items items)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +92,7 @@ namespace ToDoList.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ExecutionDate,Description")] Items items)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ExecutionDate,Description,IsDone")] Items items)
         {
             if (id != items.Id)
             {
@@ -112,7 +118,7 @@ namespace ToDoList.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
+            }       
             return View(items);
         }
 
@@ -148,6 +154,21 @@ namespace ToDoList.Controllers
         private bool ItemsExists(int id)
         {
             return _context.Items.Any(e => e.Id == id);
+        }
+
+        public IActionResult IsDoneOrNot(int id)
+        {
+            using (var db = DbHelper.GetConnection())
+            {
+                Items item23 = db.Get<Items>(id);
+                if (item23 != null)
+                {
+                    item23.IsDone = !item23.IsDone;
+                    db.Update<Items>(item23);
+                }
+            }
+
+                return RedirectToAction("Index");
         }
     }
 }

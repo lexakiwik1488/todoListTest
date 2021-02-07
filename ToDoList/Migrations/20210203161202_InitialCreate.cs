@@ -18,6 +18,7 @@ namespace ToDoList.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
+
                 {
                     table.PrimaryKey("PK_Items", x => x.Id);
                 });

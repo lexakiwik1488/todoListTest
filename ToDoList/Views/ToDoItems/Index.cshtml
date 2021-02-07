@@ -36,7 +36,8 @@
             </td>
             <td>
                 <div class="done">
-                    <input type="checkbox" id="isDone" name="isDone">
+                    <input type="checkbox" id="isDone" name="isDone" checked="@item.IsDone"
+                           onclick="window.location.href = '/ToDoItems/IsDoneOrNot/@item.Id';" />
                 </div>
             </td>
             <td>
