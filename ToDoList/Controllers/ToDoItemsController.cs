@@ -26,9 +26,12 @@ namespace ToDoList.Controllers
         }
 
         // GET: Items
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Items.ToListAsync());
+            var items = _context.Items.Where(i => !i.IsDone).ToList();
+            var completedItems = _context.Items.Where(i => i.IsDone).ToList();
+            items.AddRange(completedItems);
+            return View(items);
         }
 
         // GET: Items/Details/5
@@ -60,7 +63,7 @@ namespace ToDoList.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ExecutionDate,Description,IsDone")] Items items)
+        public async Task<IActionResult> Create(Item items)
         {
             if (ModelState.IsValid)
             {
@@ -83,7 +86,7 @@ namespace ToDoList.Controllers
             if (items == null)
             {
                 return NotFound();
-            }   
+            }
             return View(items);
         }
 
@@ -92,7 +95,7 @@ namespace ToDoList.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ExecutionDate,Description,IsDone")] Items items)
+        public async Task<IActionResult> Edit(int id, Item items)
         {
             if (id != items.Id)
             {
@@ -118,7 +121,7 @@ namespace ToDoList.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }       
+            }
             return View(items);
         }
 
@@ -160,15 +163,14 @@ namespace ToDoList.Controllers
         {
             using (var db = DbHelper.GetConnection())
             {
-                Items item23 = db.Get<Items>(id);
+                Item item23 = db.Get<Item>(id);
                 if (item23 != null)
                 {
                     item23.IsDone = !item23.IsDone;
-                    db.Update<Items>(item23);
+                    db.Update<Item>(item23);
                 }
             }
-
-                return RedirectToAction("Index");
+            return RedirectToAction("Index");
         }
     }
 }

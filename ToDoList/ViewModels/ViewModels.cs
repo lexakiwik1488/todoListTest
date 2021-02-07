@@ -17,14 +17,14 @@ namespace ToDoList.ViewModels
             {
                 using (var db = DbHelper.GetConnection())
                 {
-                    this.EditableItem = new Items();
-                    this.TodoItems = db.Query<Items>("SELECT * FROM ToDoListContext-1 ORDER BY Title DESC").ToList();
+                    this.EditableItem = new Item();
+                    this.TodoItems = db.Query<Item>("SELECT * FROM ToDoListContext-1 ORDER BY Title DESC").ToList();
                 }
             }
 
-            public List<Items> TodoItems { get; set; }
+            public List<Item> TodoItems { get; set; }
 
-            public Items EditableItem { get; set; }
+            public Item EditableItem { get; set; }
         }
     }
 }

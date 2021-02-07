@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ToDoList.Models.Items>
+﻿@model IEnumerable<ToDoList.Models.Item>
 
 <h1>Список дел</h1>
 
@@ -22,30 +22,33 @@
             </th>
         </tr>
     </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExecutionDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                <div class="done">
-                    <input type="checkbox" id="isDone" name="isDone" checked="@item.IsDone"
-                           onclick="window.location.href = '/ToDoItems/IsDoneOrNot/@item.Id';" />
-                </div>
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Детали</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id" class="delete_item" >Удалить</a>
-            </td>
-        </tr>
-}
+    <tbody style="border-collapse: collapse;">
+        @foreach (var item in Model)
+        {
+            var backgroundColor = item.IsDone ? "gray" : "none";
+            var textDecorated = item.IsDone ? "line-through" : "none";
+            <tr style="color: @backgroundColor; text-decoration: @textDecorated; ">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExecutionDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    <div class="done">
+                        <input type="checkbox" id="isDone" name="isDone" checked="@item.IsDone"
+                               onclick="window.location.href = '/ToDoItems/IsDoneOrNot/@item.Id';" />
+                    </div>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Детали</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="delete_item">Удалить</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -15,6 +15,6 @@ namespace ToDoList.Data
         {
         }
 
-        public DbSet<Items> Items { get; set; }
+        public DbSet<Item> Items { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ToDoList.Models
 {
-    public class Items
+    public class Item
     {
         public int Id { get; set; }
 
