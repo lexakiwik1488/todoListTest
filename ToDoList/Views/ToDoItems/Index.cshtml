@@ -25,20 +25,20 @@
     <tbody style="border-collapse: collapse;">
         @foreach (var item in Model)
         {
-            var backgroundColor = item.IsDone ? "gray" : "none";
+            var backgroundColor = item.IsDone ? "lightslategray" : "none";
             var textDecorated = item.IsDone ? "line-through" : "none";
-            <tr style="color: @backgroundColor; text-decoration: @textDecorated; ">
-                <td>
+            <tr >
+                <td style="background-color: @backgroundColor; text-decoration: @textDecorated; ">
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
-                <td>
+                <td style="background-color: @backgroundColor; text-decoration: @textDecorated; ">
                     @Html.DisplayFor(modelItem => item.ExecutionDate)
-                </td>
-                <td>
+                </td >
+                <td style="background-color: @backgroundColor; text-decoration: @textDecorated; ">
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
-                <td>
-                    <div class="done">
+                <td style="background-color: @backgroundColor; text-decoration: @textDecorated; ">
+                    <div class="done" >
                         <input type="checkbox" id="isDone" name="isDone" checked="@item.IsDone"
                                onclick="window.location.href = '/ToDoItems/IsDoneOrNot/@item.Id';" />
                     </div>

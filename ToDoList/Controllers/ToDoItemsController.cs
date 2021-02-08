@@ -33,7 +33,7 @@ namespace ToDoList.Controllers
             items.AddRange(completedItems);
             return View(items);
         }
-
+    
         // GET: Items/Details/5
         public async Task<IActionResult> Details(int? id)
         {
